@@ -33,6 +33,16 @@ Machine learning can learn patterns from known malware samples and apply that kn
 
 ---
 
+## Dataset
+
+**EMBER2024** — a large-scale benchmark dataset for holistic malware classification.
+
+- [Main KDD Research Paper](https://arxiv.org/abs/2506.05074)
+- [CrowdStrike Blog: EMBER2024](https://www.crowdstrike.com/en-us/blog/ember-2024-advancing-cybersecurity-ml-training-on-evasive-malware/)
+- [Medium Breakdown of EMBER2024](https://zhanghaolin66.medium.com/ember2024-a-new-benchmark-for-holistic-malware-classification-62dcb260b47a)
+
+---
+
 ## Approach: Cascaded Model Design
 
 ### Stage 1 — Binary Classification (Malicious vs. Benign)
@@ -49,13 +59,33 @@ This is a multiclass problem where each file is assigned a behavioral tag from t
 
 ---
 
-## Dataset
+## Results
 
-**EMBER2024** — a large-scale benchmark dataset for holistic malware classification.
+### Binary Classification (Malicious vs. Benign)
+| Model | Accuracy | ROC AUC | Train Samples | Test Samples |
+| -------- | -------- | -------- | -------- | -------- |
+| LGBMClassifier | 87.92%  | 0.9574 | 312,125 | 359,994 |
 
-- [Main KDD Research Paper](https://arxiv.org/abs/2506.05074)
-- [CrowdStrike Blog: EMBER2024](https://www.crowdstrike.com/en-us/blog/ember-2024-advancing-cybersecurity-ml-training-on-evasive-malware/)
-- [Medium Breakdown of EMBER2024](https://zhanghaolin66.medium.com/ember2024-a-new-benchmark-for-holistic-malware-classification-62dcb260b47a)
+- Correctly detected 150,870 out of 180,000 malware samples.
+- 14,356 false positives (*benign files flagged as malware*)
+- 29,130 false negatives (*actual malware missed*)
+
+
+<p>
+    <figure>
+    <img src="./assets/images/confusion-matrix.png" alt="Confusion Matrix" width="50%">
+    <figcaption><i>Figure 1: This is the confusion matrix.</i></figcaption>
+    </figure>
+</p>
+
+![Feature Importance](./assets/images/feature-importance.png)
+*Figure 2: This is the feature importance.*
+
+![API Categories](./assets/images/api-categories.png)
+*Figure 3: These are the API categories.*
+
+![Imported API Counts](./assets/images/imported-api-counts.png)
+*Figure 4: These are the imported API counts.*
 
 ---
 
