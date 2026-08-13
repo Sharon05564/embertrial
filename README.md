@@ -71,7 +71,7 @@ This is a multiclass problem where each file is assigned a behavioral tag from t
 - 29,130 false negatives (*actual malware missed*)
 
 
-<p align="center">
+<p>
     <figure>
     <img src="./assets/images/confusion-matrix.png" alt="Confusion Matrix" width="50%">
     <figcaption><i>Figure 1: This is the confusion matrix.</i></figcaption>
