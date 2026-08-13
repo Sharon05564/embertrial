@@ -33,6 +33,32 @@ Machine learning can learn patterns from known malware samples and apply that kn
 
 ---
 
+## Results
+
+
+| Model | Accuracy  | ROC AUC | Train Samples | Test Samples
+| -------- | -------- | -------- | -------- | -------- | -------- |
+| LGBMClassifier | 87.92%  | 0.9574 | 312,125 | 359,994
+
+- Correctly detected 150,870 out of 180,000 malware samples.
+- 14,356 false positives (*benign files flagged as malware*)
+- 29,130 false negatives (*actual malware missed*)
+
+
+![Confusion Matrix](./assets/images/confusion-matrix.png)
+*Figure 1: This is the confusion matrix.*
+
+![Feature Importance](./assets/images/feature-importance.png)
+*Figure 2: This is the feature importance.*
+
+![API Categories](./assets/images/api-categories.png)
+*Figure 3: These are the API categories.*
+
+![Imported API Counts](./assets/images/imported-api-counts.png)
+*Figure 4: These are the imported API counts.*
+
+---
+
 ## Approach: Cascaded Model Design
 
 ### Stage 1 — Binary Classification (Malicious vs. Benign)
