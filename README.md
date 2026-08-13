@@ -61,6 +61,7 @@ This is a multiclass problem where each file is assigned a behavioral tag from t
 
 ## Results
 
+### Binary Classification (Malicious vs. Benign)
 | Model | Accuracy | ROC AUC | Train Samples | Test Samples |
 | -------- | -------- | -------- | -------- | -------- |
 | LGBMClassifier | 87.92%  | 0.9574 | 312,125 | 359,994 |
@@ -69,6 +70,12 @@ This is a multiclass problem where each file is assigned a behavioral tag from t
 - 14,356 false positives (*benign files flagged as malware*)
 - 29,130 false negatives (*actual malware missed*)
 
+
+
+<figure>
+  <img src="./assets/images/confusion-matrix.png" alt="Confusion Matrix" width="50%">
+  <figcaption><i>Figure 1: This is the confusion matrix.</i></figcaption>
+</figure>
 
 ![Confusion Matrix](./assets/images/confusion-matrix.png)
 *Figure 1: This is the confusion matrix.*
