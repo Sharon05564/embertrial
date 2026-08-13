@@ -77,9 +77,6 @@ This is a multiclass problem where each file is assigned a behavioral tag from t
   <figcaption><i>Figure 1: This is the confusion matrix.</i></figcaption>
 </figure>
 
-![Confusion Matrix](./assets/images/confusion-matrix.png)
-*Figure 1: This is the confusion matrix.*
-
 ![Feature Importance](./assets/images/feature-importance.png)
 *Figure 2: This is the feature importance.*
 
