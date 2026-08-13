@@ -71,11 +71,12 @@ This is a multiclass problem where each file is assigned a behavioral tag from t
 - 29,130 false negatives (*actual malware missed*)
 
 
-
-<figure>
-  <img src="./assets/images/confusion-matrix.png" alt="Confusion Matrix" width="50%">
-  <figcaption><i>Figure 1: This is the confusion matrix.</i></figcaption>
-</figure>
+<p align="center">
+    <figure>
+    <img src="./assets/images/confusion-matrix.png" alt="Confusion Matrix" width="50%">
+    <figcaption><i>Figure 1: This is the confusion matrix.</i></figcaption>
+    </figure>
+</p>
 
 ![Feature Importance](./assets/images/feature-importance.png)
 *Figure 2: This is the feature importance.*
