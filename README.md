@@ -10,10 +10,10 @@
 |------|------|
 | Lorena Sarasua-Fernandez | Collaborator |
 | Sophie Liu | Collaborator |
-| Brandon Jaipersaud | Collaborator |
 | Chuks Ofojuah | Collaborator |
 | Sharon Owusu | Collaborator |
 | Atharva Sasankar | Collaborator |
+| Brandon Jaipersaud | Collaborator |
 
 ---
 
@@ -40,6 +40,8 @@ Machine learning can learn patterns from known malware samples and apply that kn
 - [Main KDD Research Paper](https://arxiv.org/abs/2506.05074)
 - [CrowdStrike Blog: EMBER2024](https://www.crowdstrike.com/en-us/blog/ember-2024-advancing-cybersecurity-ml-training-on-evasive-malware/)
 - [Medium Breakdown of EMBER2024](https://zhanghaolin66.medium.com/ember2024-a-new-benchmark-for-holistic-malware-classification-62dcb260b47a)
+
+Our project uses a **20% deterministic sample of the WIN32 file types**, the largest subset of file types, from the EMBER2024 dataset to account for file distribution bias and storage limitations.
 
 ---
 
