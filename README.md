@@ -61,6 +61,55 @@ This is a multiclass problem where each file is assigned a behavioral tag from t
 
 ---
 
+## Web Frontend
+
+A FastAPI backend + static HTML/JS frontend let you explore the trained
+model's metrics (**Model Dashboard**) and run real, non-simulated
+predictions on any Win32 `.exe` you upload (**Live Classifier Demo**).
+
+- `backend/` — FastAPI app (`main.py`), dataset download script
+  (`download_data.py`), training script (`train_and_save_model.py`), and PE
+  feature extraction from raw file bytes (`feature_extraction.py`)
+- `frontend/` — static dashboard + live classifier demo, served by the backend
+- `models/` — trained model artifact (`detection_model.pkl`, gitignored —
+  regenerate it locally) and the training feature column order
+
+### Full setup from scratch
+
+```bash
+git clone https://github.com/Sharon05564/embertrial.git
+cd embertrial
+
+python -m venv .venv
+.venv\Scripts\Activate.ps1        # Windows PowerShell; `source .venv/bin/activate` on macOS/Linux
+pip install -r backend/requirements.txt
+
+python backend/download_data.py   # downloads ~2-8 GB zip, needs ~20-30 GB free disk
+python backend/train_and_save_model.py
+
+uvicorn backend.main:app --reload
+```
+
+Then open http://127.0.0.1:8000. The **Model Dashboard** tab shows real
+accuracy / ROC AUC / confusion matrix / feature-importance charts computed
+from the model you just trained, and the **Live Classifier Demo** tab lets
+you upload a real `.exe` (e.g. anything under `C:\Windows\System32`) and get
+a real prediction back — features are extracted live from the file's raw
+bytes, there is no simulated/mocked path.
+
+If `backend/download_data.py` fails (Google Drive quota/link issues), fall
+back to `notebooks/hf-download-win32.ipynb`, which rebuilds the same data
+from the ~74 GB raw EMBER2024 dataset on Hugging Face (needs 80-100 GB free
+disk).
+
+**Windows troubleshooting:** if `train_and_save_model.py` crashes with
+`OSError: exception: access violation reading 0x0...` during `model.fit`,
+LightGBM's native library is missing `vcruntime140_1.dll`. Install the
+[Microsoft Visual C++ Redistributable](https://aka.ms/vs/17/release/vc_redist.x64.exe)
+and re-run.
+
+---
+
 ## Results
 
 ### Binary Classification (Malicious vs. Benign)
