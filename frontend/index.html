@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EMBER2024 Malware Classification</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="/assets/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2 3 6v6c0 5.2 3.6 9.7 9 11 5.4-1.3 9-5.8 9-11V6l-9-4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M9 12.2l2 2 4-4.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <div>
+          <h1>EMBER2024 Malware Classification</h1>
+          <p class="subtitle">LightGBM binary classifier &mdash; Win32 malicious vs. benign detection</p>
+        </div>
+      </div>
+      <div id="header-status" class="header-status"></div>
+    </header>
+
+    <nav class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="dashboard" role="tab" aria-selected="true">Model Dashboard</button>
+      <button class="tab-btn" data-tab="classifier" role="tab" aria-selected="false">Live Classifier Demo</button>
+    </nav>
+
+    <main>
+      <section id="dashboard" class="tab-panel active">
+        <div id="dashboard-status" class="status-message"></div>
+
+        <div id="dashboard-content" hidden>
+          <div class="stat-grid">
+            <div class="stat-tile">
+              <div class="stat-label">Accuracy</div>
+              <div class="stat-value" id="metric-accuracy">&ndash;</div>
+              <div class="meter" id="meter-accuracy" role="img"></div>
+            </div>
+            <div class="stat-tile">
+              <div class="stat-label">ROC AUC</div>
+              <div class="stat-value" id="metric-auc">&ndash;</div>
+              <div class="meter" id="meter-auc" role="img"></div>
+            </div>
+            <div class="stat-tile stat-tile--plain">
+              <div class="stat-label">Train samples</div>
+              <div class="stat-value" id="metric-train">&ndash;</div>
+              <div class="stat-caption">20% deterministic sample</div>
+            </div>
+            <div class="stat-tile stat-tile--plain">
+              <div class="stat-label">Test samples</div>
+              <div class="stat-value" id="metric-test">&ndash;</div>
+              <div class="stat-caption">held-out, full set</div>
+            </div>
+          </div>
+
+          <div class="panel-grid">
+            <div class="panel">
+              <div class="panel-head">
+                <h2>Confusion Matrix</h2>
+                <p class="panel-sub">Predicted label vs. ground truth, test set</p>
+              </div>
+              <div id="confusion-heatmap" class="chart-slot"></div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-head">
+                <h2>Precision / Recall / F1 by Class</h2>
+                <p class="panel-sub">Benign vs. malware, test set</p>
+              </div>
+              <div id="class-metrics-chart" class="chart-slot"></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Top Feature Importances</h2>
+              <p class="panel-sub">LightGBM split-count importance, top 12 of 16 engineered features</p>
+            </div>
+            <div id="feature-importance-chart" class="chart-slot"></div>
+          </div>
+
+          <details class="panel raw-details">
+            <summary>Raw numbers (classification report &amp; confusion matrix table)</summary>
+            <div class="raw-tables">
+              <table id="confusion-matrix" class="report-table"></table>
+              <table id="classification-report" class="report-table"></table>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section id="classifier" class="tab-panel">
+        <div id="classifier-status" class="status-message"></div>
+
+        <div class="panel upload-panel">
+          <div class="panel-head">
+            <h2>Upload a Win32 executable</h2>
+            <p class="panel-sub">
+              Upload a real .exe file (e.g. anything under
+              <code>C:\Windows\System32</code>) to run it through the trained
+              LightGBM model. Features are extracted live from the file's raw
+              bytes &mdash; this is a real prediction, not a simulation.
+            </p>
+          </div>
+          <form id="upload-form">
+            <label class="file-drop" id="file-drop" for="file-input">
+              <input type="file" id="file-input" name="file" required />
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 16V4m0 0L7 9m5-5 5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span id="file-drop-label">Choose a file or drag it here</span>
+            </label>
+            <button type="submit" id="classify-btn">Classify</button>
+          </form>
+          <div id="upload-progress" class="status-message" hidden>
+            <span class="spinner" aria-hidden="true"></span> Analyzing file&hellip;
+          </div>
+        </div>
+
+        <div id="result-panel" class="panel result-panel" hidden>
+          <div class="result-head">
+            <div id="result-badge" class="result-badge"></div>
+            <div id="result-filename" class="result-filename"></div>
+          </div>
+
+          <div class="split-bar-wrap">
+            <div class="split-bar" id="result-split-bar"></div>
+            <div class="split-bar-legend">
+              <span class="legend-item"><span class="legend-dot legend-dot--good"></span>Benign <b id="result-benign-prob">&ndash;</b></span>
+              <span class="legend-item"><span class="legend-dot legend-dot--critical"></span>Malware <b id="result-malware-prob">&ndash;</b></span>
+            </div>
+          </div>
+
+          <div class="stat-grid stat-grid--compact">
+            <div class="stat-tile stat-tile--plain">
+              <div class="stat-label">File size</div>
+              <div class="stat-value" id="result-file-size">&ndash;</div>
+            </div>
+            <div class="stat-tile stat-tile--plain">
+              <div class="stat-label">Valid PE?</div>
+              <div class="stat-value" id="result-is-pe">&ndash;</div>
+            </div>
+            <div class="stat-tile stat-tile--plain">
+              <div class="stat-label">Imported DLLs</div>
+              <div class="stat-value" id="result-dlls">&ndash;</div>
+            </div>
+            <div class="stat-tile stat-tile--plain">
+              <div class="stat-label">Imported functions</div>
+              <div class="stat-value" id="result-functions">&ndash;</div>
+            </div>
+          </div>
+
+          <h3>Extracted Features</h3>
+          <table id="result-features" class="report-table"></table>
+        </div>
+      </section>
+    </main>
+
+    <div id="chart-tooltip" class="chart-tooltip" hidden></div>
+  </div>
+
+  <script src="/assets/script.js"></script>
+</body>
+</html>

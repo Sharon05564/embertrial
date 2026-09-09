@@ -1,4 +1,9 @@
 .venv/
 venv/
 *data
+*.zip
 .DS_Store
+__pycache__/
+*.pyc
+models/*.pkl
+_dump_*.txt

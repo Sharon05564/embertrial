@@ -1,0 +1,18 @@
+[
+  "file_size",
+  "file_entropy",
+  "is_pe",
+  "numstrings",
+  "avg_string_length",
+  "num_printables",
+  "string_entropy",
+  "num_imported_dlls",
+  "num_imported_functions",
+  "avg_functions_per_dll",
+  "has_KERNEL32.dll",
+  "has_ADVAPI32.dll",
+  "has_USER32.dll",
+  "has_WS2_32.dll",
+  "has_SHELL32.dll",
+  "has_OLE32.dll"
+]
